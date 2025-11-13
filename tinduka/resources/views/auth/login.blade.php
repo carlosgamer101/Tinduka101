@@ -1,47 +1,80 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en" class="h-full" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Tinduka</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+</head>
+<body class="h-full bg-cover bg-center bg-no-repeat flex items-center justify-center p-4" 
+      style="background-image: url('{{ asset('images/auth/bg.jpg') }}');">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="flex justify-center mb-8">
+            <a href="{{ route('home') }}" class="flex items-center gap-3">
+                <img src="{{ asset('images/logo.png') }}" alt="Tinduka" class="w-16 h-16 rounded-full ring-4 ring-primary/50 shadow-2xl">
+                <span class="text-4xl font-bold text-white drop-shadow-lg">Tinduka</span>
+            </a>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <!-- Glass Card -->
+        <div class="backdrop-blur-xl bg-black/60 rounded-3xl shadow-2xl p-8 border border-white/10">
+            <h2 class="text-3xl font-bold text-center text-white mb-2">Welcome Back</h2>
+            <p class="text-center text-white/70 mb-8">Sign in to explore Kenya’s hidden gems</p>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <form method="POST" action="{{ route('login') }}" class="space-y-6">
+                @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <!-- Email -->
+                <div>
+                    <label class="label">
+                        <span class="label-text text-white font-medium">Email</span>
+                    </label>
+                    <input name="email" type="email" required autofocus 
+                           class="input input-bordered w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 @error('email') input-error @enderror"
+                           value="{{ old('email') }}" placeholder="you@example.com">
+                    @error('email')
+                        <p class="text-error text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="label">
+                        <span class="label-text text-white font-medium">Password</span>
+                    </label>
+                    <input name="password" type="password" required 
+                           class="input input-bordered w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 @error('password') input-error @enderror"
+                           placeholder="••••••••">
+                    @error('password')
+                        <p class="text-error text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Remember + Forgot -->
+                <div class="flex items-center justify-between text-sm">
+                    <label class="cursor-pointer label text-white">
+                        <input type="checkbox" name="remember" class="checkbox checkbox-primary checkbox-sm">
+                        <span class="label-text ml-2">Remember me</span>
+                    </label>
+                    <a href="{{ route('password.request') }}" class="link link-primary">Forgot password?</a>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary w-full btn-lg">
+                    Sign In
+                </button>
+            </form>
+
+            <p class="text-center text-white/70 mt-6 text-sm">
+                Don’t have an account?
+                <a href="{{ route('register') }}" class="link link-primary font-medium">Register here</a>
+            </p>
         </div>
+    </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    @livewireScripts
+</body>
+</html>
