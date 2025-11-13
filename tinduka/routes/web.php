@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\LocationController;  // ← ADD THIS LINE
+use App\Http\Controllers\LocationController;  
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +20,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/locations/{location}/review', [LocationController::class, 'storeReview'])
+        ->name('locations.review');
+
+    Route::post('/reviews/{review}/comment', [LocationController::class, 'storeComment'])
+        ->name('reviews.comment');
 });
 
 require __DIR__.'/auth.php';
